@@ -62,3 +62,4 @@
     </main>
 </div><!--.contenedor-->
 
+<?php include './inc/template/footer.php'; ?>
