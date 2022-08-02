@@ -30,11 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'respuesta' => 'correcto',
                     'id_insertado' => $stmt->insert_id,
                     'usuario' => $usuario,
-                    'tipo' => $accion
+                    'tipo' => $accion,
+                    'mensaje' => 'Se ha resgitrado Correctamente'
                 );
             } else {
                 $respuesta = array(
-                    'respuesta' => 'error',
+                    'respuesta' => 'error inesperado',
                 );
             }
             $stmt->close();
@@ -50,30 +51,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-/* if ($_POST['accion'] == 'crear') {
+if ($_POST['accion'] == 'login') {
     // Codigo para loguear los Administradores 
-    require_once('../functions/bd.php');
-
-    // Validar las entradas
-    $usuario = filter_var($_POST['usuario'], FILTER_SANITIZE_STRING);
-    $password = filter_var($_POST['password'], FILTER_SANITIZE_STRING);
-
+    include('../functions/connection.php');
 
     try {
-        $stmt = $conn->prepare("INSERT INTO usuarios(usuario, password) VALUES (?, ?)");
-        $stmt->bind_param("ss", $usuario, $password);
+        // Seleccionar Administrador de la BD
+        $stmt = $conn->prepare("SELECT usuario, id, password FROM usuarios WHERE usuario = ?");
+        $stmt->bind_param("s", $usuario);
         $stmt->execute();
-        if ($stmt->affected_rows == 1) {
+        // loguear el usuario
+        $stmt->bind_result($nombre_usuario, $id_usuario, $password_usuario);
+        $stmt->fetch();
+        if ($nombre_usuario) {
+            // el usuario existe, verificar el password
+            if (password_verify($password, $password_usuario)) {
+                // Iniciar la sesion
+                session_start();
+                $_SESSION['nombre'] = $usuario;
+                $_SESSION['id'] = $id_usuario;
+                $_SESSION['login'] = true;
+                // Login Correcto
+                $respuesta = array(
+                    'respuesta' => 'correcto',
+                    'usuario' => $nombre_usuario,
+                    'tipo' => $accion,
+                    'mensaje' => 'Inicio de session exitoso'
+                );
+            } else {
+                // login Incorrecto, enviar error
+                $respuesta = array(
+                    'error' => 'La contraseña es incorrecta'
+                );
+            }
+        } else {
             $respuesta = array(
-                'respuesta' => 'correcto',
-                'datos' => array(
-                    'usuario' => $usuario,
-                    'password' => $password,
-                    'telefono' => $telefono,
-                    'id_insertado' => $stmt->insert_id
-                )
+                'respuesta' => 'error',
+                'error' => 'El usuario no existe'
             );
         }
+        
         $stmt->close();
         $conn->close();
     } catch (\Throwable $th) {
@@ -83,4 +100,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     echo json_encode($respuesta);
-} */
+}

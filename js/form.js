@@ -58,17 +58,44 @@ function validarRegistro(e) {
             swal({
               type: "success",
               title: `El usuario ${respuesta.usuario}`,
-              text: "Se ha resgitrado Correctamente",
+              text: `${respuesta.mensaje}`,
             });
+          } else {
+            // Notificacion
+        swal({
+            type: "error",
+            title: `Error`,
+            text: `${respuesta.error}`,
+          });
+        } 
+        if (respuesta.tipo === "login") {
+            // Notificacion
+            swal({
+              type: "success",
+              title: `El usuario ${respuesta.usuario}`,
+              text: `${respuesta.mensaje}`,
+            })
+            .then(result => {
+                if(result.value) {
+                    window.location.href = 'index.php';
+                }
+            })
           }
         } else {
             // Notificacion
             swal({
-                type: "error",
-                title: `Error`,
-                text: "Ocurrio un error inesperado",
-              });
-        }
+              type: "error",
+              title: `Error`,
+              text: `${respuesta.error}`,
+            });
+          }
+      } else {
+        // Notificacion
+        swal({
+          type: "error",
+          title: `Error`,
+          text: `${respuesta.error}`,
+        });
       }
     };
 
