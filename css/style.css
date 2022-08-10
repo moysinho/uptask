@@ -88,7 +88,7 @@ body {
 
 /** Barra **/
 body.index {
-    height: 100vh;
+    height: auto;
 }
 .barra {
     background-color: #455A64;
