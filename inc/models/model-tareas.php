@@ -8,7 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $accion = $_POST['accion'];
         $id_proyecto = (int) $_POST['id_proyecto'];
         $tarea = $_POST['tarea'];
-        $estado = $_POST['estado'];
 
         // Importar la conexion
         include('../functions/connection.php');

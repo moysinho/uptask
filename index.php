@@ -67,10 +67,11 @@ if (isset($_GET['id_proyecto'])) {
                                 </div>
                             </li>
                         <?php endforeach; ?>
-                <?php }
-                } else {
-                    // no hay tareas
-                    echo "<p>No hay tareas en este proyecto</p>";
+                        
+                <?php } else {
+                        // no hay tareas
+                        echo "<p class='lista-vacia'>No hay tareas en este proyecto</p>";
+                    }
                 }
                 ?>
 
