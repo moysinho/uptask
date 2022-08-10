@@ -77,6 +77,15 @@ if (isset($_GET['id_proyecto'])) {
 
             </ul>
         </div>
+        <div class="avance">
+            <h2>Avance del Proyecto:
+                <div id="barra-avance" class="barra-avance">
+                    <div id="porcentaje" class="porcentaje">
+                        
+                    </div>
+                </div>
+            </h2>
+        </div>
     </main>
 </div>
 <!--.contenedor-->

@@ -3,6 +3,11 @@ eventListeners();
 const listaProyectos = document.querySelector("ul#proyectos");
 
 function eventListeners() {
+  // Document Ready
+  document.addEventListener('DOMContentLoaded', function(){
+    actualizarProgreso();
+  });
+
   // Boton para crear proyecto
   document
     .querySelector(".crear-proyecto a")
@@ -156,11 +161,10 @@ function agregarTarea(e) {
             });
 
             // seleccionar el parrafo con lalista vacia
-            const parrafoListaVacia = document.querySelectorAll('.lista-vacia');
+            const parrafoListaVacia = document.querySelectorAll(".lista-vacia");
             if (parrafoListaVacia.length > 0) {
-              document.querySelector('.lista-vacia').remove()
+              document.querySelector(".lista-vacia").remove();
             }
-
 
             // construit Template
             const nuevaTarea = document.createElement("li");
@@ -186,6 +190,8 @@ function agregarTarea(e) {
 
             // limpiar Formulario
             document.querySelector(".agregar-tarea").reset();
+
+            actualizarProgreso();
           }
         } else {
           // Hubo un error
@@ -195,6 +201,7 @@ function agregarTarea(e) {
             text: `${resultado}`,
           });
         }
+        
       }
     };
 
@@ -258,6 +265,7 @@ function cambiarEstadoTarea(tarea, estado) {
     if (this.status === 200) {
       const respuesta = JSON.parse(xhr.responseText);
       if (respuesta.respuesta === "correcto") {
+        actualizarProgreso();
       }
     }
   };
@@ -265,7 +273,6 @@ function cambiarEstadoTarea(tarea, estado) {
   // enviar la peticion
   xhr.send(datos);
 }
-
 
 // Eliminar tareas de la BD
 function eliminarTareaBD(tarea) {
@@ -287,16 +294,42 @@ function eliminarTareaBD(tarea) {
       const respuesta = JSON.parse(xhr.responseText);
       if (respuesta.respuesta === "correcto") {
         // Comprobar que haya tareas restantes
-        const listaTareasRestantes = document.querySelectorAll('li.tarea');
+        const listaTareasRestantes = document.querySelectorAll("li.tarea");
         if (listaTareasRestantes.length === 0) {
-          document.querySelector('.listado-pendientes').innerHTML = "<p class='lista-vacia'>No hay tareas en este proyecto</p>";
-          
+          document.querySelector(".listado-pendientes").innerHTML =
+            "<p class='lista-vacia'>No hay tareas en este proyecto</p>";
         }
-
+        actualizarProgreso();
       }
     }
   };
 
   // enviar la peticion
   xhr.send(datos);
+}
+
+
+// Actualizar el progreso del proyecto
+function actualizarProgreso() {
+  // Obtener todas las tareas
+  const tareas = document.querySelectorAll('li.tarea')
+  
+  // Obtener las tareas completadas
+  const tareasCompletadas = document.querySelectorAll('i.completo')
+
+  // Determinar el avance
+  const avance = Math.round((tareasCompletadas.length / tareas.length) * 100);
+
+  // asignar el avance a la barra
+  const porcentaje = document.querySelector('#porcentaje');
+  porcentaje.style.width = `${avance}%`;
+
+  if (avance === 100) {
+    swal({
+      type: "success",
+      title: `Proyecto Terminado`,
+      text: `Ya no tienes tareas pendiente 👍`,
+    })
+  }
+  
 }
