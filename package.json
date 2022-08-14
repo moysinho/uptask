@@ -8,15 +8,15 @@
     "start": "concurrently \"npm run dev \" \"npm run watch \" ",
     "watch": "webpack --w --mode development"
   },
-  "author": "Juan De la torre Valdez",
+  "author": "Moysinho Sykov",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.27.2",
     "bcrypt-nodejs": "0.0.3",
     "concurrently": "^4.1.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.4",
-    "express": "^4.16.4",
+    "express": "^4.18.1",
     "express-session": "^1.15.6",
     "express-validator": "^5.3.1",
     "html-to-text": "^4.0.0",
@@ -35,7 +35,7 @@
     "@babel/core": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
     "babel-loader": "^8.0.5",
-    "nodemon": "^1.18.9",
+    "nodemon": "^2.0.19",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3"
   }
